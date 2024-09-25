@@ -37,7 +37,8 @@ func main() {
 		return
 	}
 
-	// fmt.Printf("%v", story)
+	// fmt.Printf("%v\n", story)
+	// fmt.Printf("%+v\n", story)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(response http.ResponseWriter, request *http.Request) {
