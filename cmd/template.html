@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Go Template Exercise</title>
+    <link rel="stylesheet" href="https://matcha.mizu.sh/matcha.css" />
+  </head>
+  <body>
+    <h1>{{.Title}}</h1>
+
+    {{range .Story}}
+    <p>{{.}}</p>
+    {{end}} {{if .Options}}
+    <h3>What do you want to do next?</h3>
+    {{end}} {{range .Options}}
+    <div>
+      <a href="/{{.Arc}}">{{.Text}}</a>
+    </div>
+    {{end}}
+  </body>
+</html>
