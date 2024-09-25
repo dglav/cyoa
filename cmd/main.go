@@ -7,25 +7,20 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
+
+type Story map[string]Arc
 
 type Arc struct {
 	Title      string   `json:"title"`
 	Paragraphs []string `json:"story"`
-	Options    []struct {
-		Text string `json:"text"`
-		Arc  string `json:"arc"`
-	} `json:"options"`
+	Options    []Option `json:"options"`
 }
 
-type cyoa struct {
-	Intro     Arc `json:"intro"`
-	NewYork   Arc `json:"new-york"`
-	Debate    Arc `json:"debate"`
-	SeanKelly Arc `json:"sean-kelly"`
-	MarkBates Arc `json:"mark-bates"`
-	Denver    Arc `json:"denver"`
-	Home      Arc `json:"home"`
+type Option struct {
+	Text string `json:"text"`
+	Arc  string `json:"arc"`
 }
 
 func main() {
@@ -35,12 +30,14 @@ func main() {
 		return
 	}
 
-	var story cyoa
+	var story Story
 	err = json.Unmarshal(file, &story)
 	if err != nil {
 		fmt.Printf("Error marshalling story: %v", err)
 		return
 	}
+
+	// fmt.Printf("%v", story)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(response http.ResponseWriter, request *http.Request) {
@@ -50,7 +47,7 @@ func main() {
 			http.Error(response, "Error parsing template", 500)
 		}
 
-		tmpl.Execute(response, story.Intro)
+		tmpl.Execute(response, story["intro"])
 	})
 	mux.HandleFunc("/new-york", func(response http.ResponseWriter, request *http.Request) {
 		// Create a template and fill in the values with the json data
@@ -59,7 +56,8 @@ func main() {
 			http.Error(response, "Error parsing template", 500)
 		}
 
-		tmpl.Execute(response, story.NewYork)
+		arc, _ := strings.CutPrefix(request.URL.Path, "/")
+		tmpl.Execute(response, story[arc])
 	})
 	mux.HandleFunc("/debate", func(response http.ResponseWriter, request *http.Request) {
 		// Create a template and fill in the values with the json data
@@ -68,7 +66,8 @@ func main() {
 			http.Error(response, "Error parsing template", 500)
 		}
 
-		tmpl.Execute(response, story.Debate)
+		arc, _ := strings.CutPrefix(request.URL.Path, "/")
+		tmpl.Execute(response, story[arc])
 	})
 	mux.HandleFunc("/sean-kelly", func(response http.ResponseWriter, request *http.Request) {
 		// Create a template and fill in the values with the json data
@@ -77,7 +76,8 @@ func main() {
 			http.Error(response, "Error parsing template", 500)
 		}
 
-		tmpl.Execute(response, story.SeanKelly)
+		arc, _ := strings.CutPrefix(request.URL.Path, "/")
+		tmpl.Execute(response, story[arc])
 	})
 
 	mux.HandleFunc("/mark-bates", func(response http.ResponseWriter, request *http.Request) {
@@ -87,7 +87,8 @@ func main() {
 			http.Error(response, "Error parsing template", 500)
 		}
 
-		tmpl.Execute(response, story.MarkBates)
+		arc, _ := strings.CutPrefix(request.URL.Path, "/")
+		tmpl.Execute(response, story[arc])
 	})
 
 	mux.HandleFunc("/denver", func(response http.ResponseWriter, request *http.Request) {
@@ -97,7 +98,8 @@ func main() {
 			http.Error(response, "Error parsing template", 500)
 		}
 
-		tmpl.Execute(response, story.Denver)
+		arc, _ := strings.CutPrefix(request.URL.Path, "/")
+		tmpl.Execute(response, story[arc])
 	})
 
 	mux.HandleFunc("/home", func(response http.ResponseWriter, request *http.Request) {
@@ -107,7 +109,8 @@ func main() {
 			http.Error(response, "Error parsing template", 500)
 		}
 
-		tmpl.Execute(response, story.Home)
+		arc, _ := strings.CutPrefix(request.URL.Path, "/")
+		tmpl.Execute(response, story[arc])
 	})
 
 	fmt.Println("Starting the server on :8080")
