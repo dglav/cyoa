@@ -40,76 +40,40 @@ func main() {
 	// fmt.Printf("%v\n", story)
 	// fmt.Printf("%+v\n", story)
 
+	tmpl, err := template.ParseFiles("cmd/cyoaweb/template.html")
+	if err != nil {
+		fmt.Printf("Error parsing template: %v\n", err)
+		return
+	}
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", func(response http.ResponseWriter, request *http.Request) {
-		// Create a template and fill in the values with the json data
-		tmpl, err := template.ParseFiles("cmd/template.html")
-		if err != nil {
-			http.Error(response, "Error parsing template", 500)
-		}
-
 		tmpl.Execute(response, story["intro"])
 	})
 	mux.HandleFunc("/new-york", func(response http.ResponseWriter, request *http.Request) {
-		// Create a template and fill in the values with the json data
-		tmpl, err := template.ParseFiles("cmd/template.html")
-		if err != nil {
-			http.Error(response, "Error parsing template", 500)
-		}
-
 		arc, _ := strings.CutPrefix(request.URL.Path, "/")
 		tmpl.Execute(response, story[arc])
 	})
 	mux.HandleFunc("/debate", func(response http.ResponseWriter, request *http.Request) {
-		// Create a template and fill in the values with the json data
-		tmpl, err := template.ParseFiles("cmd/template.html")
-		if err != nil {
-			http.Error(response, "Error parsing template", 500)
-		}
-
 		arc, _ := strings.CutPrefix(request.URL.Path, "/")
 		tmpl.Execute(response, story[arc])
 	})
 	mux.HandleFunc("/sean-kelly", func(response http.ResponseWriter, request *http.Request) {
-		// Create a template and fill in the values with the json data
-		tmpl, err := template.ParseFiles("cmd/template.html")
-		if err != nil {
-			http.Error(response, "Error parsing template", 500)
-		}
-
 		arc, _ := strings.CutPrefix(request.URL.Path, "/")
 		tmpl.Execute(response, story[arc])
 	})
 
 	mux.HandleFunc("/mark-bates", func(response http.ResponseWriter, request *http.Request) {
-		// Create a template and fill in the values with the json data
-		tmpl, err := template.ParseFiles("cmd/template.html")
-		if err != nil {
-			http.Error(response, "Error parsing template", 500)
-		}
-
 		arc, _ := strings.CutPrefix(request.URL.Path, "/")
 		tmpl.Execute(response, story[arc])
 	})
 
 	mux.HandleFunc("/denver", func(response http.ResponseWriter, request *http.Request) {
-		// Create a template and fill in the values with the json data
-		tmpl, err := template.ParseFiles("cmd/template.html")
-		if err != nil {
-			http.Error(response, "Error parsing template", 500)
-		}
-
 		arc, _ := strings.CutPrefix(request.URL.Path, "/")
 		tmpl.Execute(response, story[arc])
 	})
 
 	mux.HandleFunc("/home", func(response http.ResponseWriter, request *http.Request) {
-		// Create a template and fill in the values with the json data
-		tmpl, err := template.ParseFiles("cmd/template.html")
-		if err != nil {
-			http.Error(response, "Error parsing template", 500)
-		}
-
 		arc, _ := strings.CutPrefix(request.URL.Path, "/")
 		tmpl.Execute(response, story[arc])
 	})
